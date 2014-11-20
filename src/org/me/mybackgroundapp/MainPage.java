@@ -5,18 +5,40 @@
  */
 
 package org.me.mybackgroundapp;
+import java.math.BigDecimal;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
+import javax.swing.JTextField;
 
 /**
  *
  * @author shaima
  */
 public class MainPage extends javax.swing.JFrame {
+public static MainPage  s=new MainPage();
 
+    EntityManagerFactory emf=null;
+    EntityManager em=null;
+    doc doc=null; 
+    Adminstration ad=null;
+    
+Nurse nur=null;
+Receptionist res=null;
+Pharmacist phar=null;
     /**
      * Creates new form MainPage
      */
     public MainPage() {
         initComponents();
+        
+        emf=Persistence.createEntityManagerFactory("ASA_HospitalPU");
+        
+        em=emf.createEntityManager();
+        
+        
     }
 
     /**
@@ -47,15 +69,31 @@ public class MainPage extends javax.swing.JFrame {
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("LOGIN");
         jButton1.setBorder(null);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jTextField1.setBorder(null);
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
 
         jTextField2.setBorder(null);
 
+        jComboBox1.setEditable(true);
         jComboBox1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         jComboBox1.setForeground(new java.awt.Color(135, 5, 5));
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Administration", "Doctor", "Nurse", "Peceptionist", "Pharmacist" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Administration", "Doctor", "Nurse", "Receptionist", "Pharmacist" }));
         jComboBox1.setBorder(null);
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -104,6 +142,92 @@ public class MainPage extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        int x=jComboBox1.getSelectedIndex();
+        
+int username =Integer.parseInt(jTextField1.getText());    
+Boolean flag=false;
+
+Query qr=em.createNamedQuery("Userpass.findAll");
+        
+List<Userpass> ar=qr.getResultList();
+for(Userpass r:ar){
+//this.rarea.append(r.getRegionId().toString()+"     "+r.getRegionName()+"\n");
+System.out.print(r.getUsername().toString());
+    //BigDecimal v=r.getUsername();
+if(jTextField1.getText().equals(r.getUsername().toString())&&jTextField2.getText().equals(r.getPassword().toString())&&jComboBox1.getSelectedItem().equals(r.getTypee().toString())){
+flag=true;
+System.out.print("found it");
+break;
+}
+
+}
+if(flag==true){
+
+// TODO add your handling code here:
+         switch(x){
+             
+              case  0 :
+                        ad=new Adminstration(username);
+                // o.setVisible(false); 
+                 s.setVisible(false);
+                ad.setVisible(true);
+                
+                
+                break;
+             
+                    
+                    case  1 :
+                        doc=new doc(username);
+                // o.setVisible(false); 
+                 s.setVisible(false);
+                doc.setVisible(true);
+                
+                
+                break;
+                    case 2:
+                        nur=new Nurse(username);
+                      //  m.setVisible(false);
+                        s.setVisible(false);
+                nur.setVisible(true);
+                 
+                break; 
+                    case 3:
+                             res=new Receptionist(username);
+                      //  m.setVisible(false);
+                        s.setVisible(false);
+                res.setVisible(true);
+                 
+                break; 
+                        
+                    case 4:
+                             phar=new Pharmacist(username);
+                      //  m.setVisible(false);
+                        s.setVisible(false);
+                phar.setVisible(true);
+                 
+                break; 
+                        
+        
+    }                                        
+    }
+else
+    System.out.print("error");
+    
+
+        
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox1ActionPerformed
 
     /**
      * @param args the command line arguments
